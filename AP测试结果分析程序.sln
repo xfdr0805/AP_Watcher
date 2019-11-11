@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AP测试结果监控程序", "AP测试结果分析程序\AP测试结果监控程序.csproj", "{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Debug|x86.ActiveCfg = Debug|x86
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Debug|x86.Build.0 = Debug|x86
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Release|Any CPU.ActiveCfg = AP监控程序|Any CPU
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Release|Any CPU.Build.0 = AP监控程序|Any CPU
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Release|x86.ActiveCfg = AP监控程序|x86
+		{2CECFDB0-6DB5-4BCA-BFA9-A33E92D3E11C}.Release|x86.Build.0 = AP监控程序|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C5803738-CBC7-4DB0-B593-CBA51231D730}
+	EndGlobalSection
+EndGlobal
