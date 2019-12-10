@@ -42,7 +42,7 @@ namespace AP_Watcher {
             InitializeComponent();
 
             timer1.Interval = 1000;
-
+            label_start_time.Text = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString();
             timer1.Tick += new EventHandler(timer1_Tick);
             timer2.Interval = 10000;
             timer2.Enabled = true;

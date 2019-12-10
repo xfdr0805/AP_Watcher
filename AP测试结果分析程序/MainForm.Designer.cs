@@ -56,6 +56,8 @@
             this.comboBox_Server = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label_start_time = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -315,11 +317,35 @@
             this.timer2.Interval = 10000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // label_start_time
+            // 
+            this.label_start_time.AutoSize = true;
+            this.label_start_time.Font = new System.Drawing.Font("宋体", 10F);
+            this.label_start_time.ForeColor = System.Drawing.Color.Teal;
+            this.label_start_time.Location = new System.Drawing.Point(106, 266);
+            this.label_start_time.Name = "label_start_time";
+            this.label_start_time.Size = new System.Drawing.Size(14, 14);
+            this.label_start_time.TabIndex = 30;
+            this.label_start_time.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("宋体", 10F);
+            this.label10.ForeColor = System.Drawing.Color.Teal;
+            this.label10.Location = new System.Drawing.Point(6, 266);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(84, 14);
+            this.label10.TabIndex = 29;
+            this.label10.Text = "Start Time:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 347);
+            this.Controls.Add(this.label_start_time);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.comboBox_Server);
             this.Controls.Add(this.TextBox_Path_Ng);
@@ -387,6 +413,8 @@
         private System.Windows.Forms.ComboBox comboBox_Server;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Label label_start_time;
+        private System.Windows.Forms.Label label10;
     }
 }
 
