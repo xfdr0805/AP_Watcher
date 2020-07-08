@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -88,7 +89,7 @@ namespace AP_Watcher {
                 comboBox_Server.Items.Clear();
                 comboBox_Server.Items.Add(servers[0]);
                 comboBox_Server.Items.Add(servers[1]);
-                if (server == "192.168.2.8") {
+                if (server == "192.168.1.8") {
                     comboBox_Server.SelectedIndex = 0;
                 } else {
                     comboBox_Server.SelectedIndex = 1;
@@ -100,7 +101,7 @@ namespace AP_Watcher {
                 myConfig["SYS"]["auto_run"].BoolValue = false;
                 myConfig["SYS"]["local_save"].BoolValue = false;
                 myConfig["SYS"]["server"].StringValue = "192.168.2.8";
-                myConfig["SYS"]["servers"].StringValueArray = new [] { "192.168.2.8","192.168.1.8"};
+                myConfig["SYS"]["servers"].StringValueArray = new [] { "192.168.1.8","10.28.3.18"};
                 myConfig["PATH_SERVER"]["passed"].StringValue = @"\01 测试结果\AP-Passed";
                 myConfig["PATH_SERVER"]["failed"].StringValue = @"\01 测试结果\AP-Failed";
                 myConfig["PATH_SERVER"]["watch"].StringValue = @"\01 测试结果\AP-Unshorted";
@@ -194,7 +195,7 @@ namespace AP_Watcher {
         }
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if(conn.State == ConnectionState.Closed) {
+            if(conn.State == ConnectionState.Closed ) {
                 Connect_DataBase();
             }
             timer2.Enabled = false;
@@ -214,8 +215,10 @@ namespace AP_Watcher {
                     barcode = barcode.ToUpper();
                     if (!CheckBox_Local.Checked) {
                         if (barcode.Length != 18) {
+                            File.Delete(Path.Combine(path_watch, fileName));
                             continue;
                         } else if (!barcode.StartsWith("A")) {
+                            File.Delete(Path.Combine(path_watch, fileName));
                             continue;
                         }
                         SetLabelText(textBox_BarCode, barcode);
@@ -232,7 +235,7 @@ namespace AP_Watcher {
                         SetLabelText(TextBox_Path_Ng, path_ng_save);
                     }
                     //// Create a new PDF document
-                    string result = "";
+                    string result = "PASSED";
                     ////Thread.Sleep(2000);
                     //// WaitForFile(e.FullPath);
                     ////FileStream fs = new FileStream(e.FullPath, FileMode.Open, FileAccess.Write, FileShare.Read);
@@ -248,23 +251,23 @@ namespace AP_Watcher {
                             if (str.Contains("FAILED")) {
                                 result = "FAILED";
                                 break;
-                            } else if (str.Contains("PASSED")) {
-                                result = "PASS";
-                                //File.Copy(e.FullPath, Path.Combine(result_path,e.Name));
-                                break;
                             }
 
                         }
                         Console.WriteLine("识别结果：" + result);
                     } catch (Exception ee) {
+                        result = "";
                         //MessageBox.Show("检测到异常", "提示");
                         Console.WriteLine(ee.Message);
+                        timer2.Enabled = true;
                     } finally {
                         doc.Close();
                         doc.Dispose();
-                        timer2.Enabled = true;
-
+                                             
                     }
+                    //2020.06.19  修复在文件不能正常打开时，PASSED文件会被移动到FAILED文件夹中
+                    if (result == "")
+                        return;
                     if (Directory.Exists(path_ok_save) == false) {
                         Directory.CreateDirectory(path_ok_save);
                     }
@@ -274,7 +277,7 @@ namespace AP_Watcher {
                     // Model.ShowMsg show = new Model.ShowMsg();
 
                     //myDialog.Owner = this;
-                    if (result == "PASS") {
+                    if (result == "PASSED") {
 
                         //if (CheckBox_Local.Checked) {
                         //    File.Copy(e.FullPath, Path.Combine(result_path, e.Name),true);
@@ -306,18 +309,16 @@ namespace AP_Watcher {
                             count_ok++;
                             SetLabelText(Label_Count_OK, count_ok + "");
                         } catch (Exception) {
-
+                            timer2.Enabled = true;
                         } finally {
                             timer2.Enabled = true;
                         }
-
-
 
                         //File.Copy(e.FullPath, Path.Combine(result_path, e.Name), true);
                         ShowFormHandler delShowForm = new ShowFormHandler(ShowMyDialog);
                         this.BeginInvoke(delShowForm, new Object[] { this, "识别结果---PASSED!", 2000, Color.Green, Color.White });
                         //show.ShowMessageBoxTimeout("识别结果---PASSED!", "提示", MessageBoxButtons.OK, 2000); //单位毫秒
-                    } else {
+                    } else if (result == "FAILED"){
 
                         //WaitForFile(e.FullPath);
                         string _path_ng = Path.Combine(path_ng_save, fileName);
@@ -332,7 +333,7 @@ namespace AP_Watcher {
                             count_ng++;
                             SetLabelText(Label_Count_NG, count_ng + "");
                         } catch (Exception) {
-
+                            timer2.Enabled = true;
                         } finally {
                             timer2.Enabled = true;
                         }
@@ -348,6 +349,7 @@ namespace AP_Watcher {
                 }
 
             }
+            label_last_time.Text = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString();
             timer2.Enabled = true;
         }
         private void ShowMyDialog(Form owner, string msg, int time_out, Color fc, Color bc)
@@ -497,7 +499,7 @@ namespace AP_Watcher {
             try {
                 conn = new MySqlConnection(connStr);
                 conn.Open();
-                SetLabelText(this, "AP Test Result  Watcher ---> 数据库连接正常 " + DateTime.Now.ToString());
+                SetLabelText(this, "AP Test Result  Watcher ---> " + DateTime.Now.ToString());
                 //WatcherStart(TextBox_Path_Watch.Text, "*.pdf");
             } catch (MySqlException ex) {
                 SetLabelText(this, "AP Test Result  Watcher ---> 数据库连接失败");
@@ -569,8 +571,9 @@ namespace AP_Watcher {
         }
         private bool GetProductDataFromMySql(string barcode)
         {
-            if (conn == null) {
-                return false;
+            if (conn.State == ConnectionState.Closed)
+            {
+                Connect_DataBase();
             }
             bool res = false;
             MySqlDataReader reader = null;

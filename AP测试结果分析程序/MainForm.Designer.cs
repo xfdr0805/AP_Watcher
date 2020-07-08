@@ -58,6 +58,8 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.label_start_time = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label_last_time = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -129,7 +131,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(263, 22);
             this.label3.TabIndex = 6;
-            this.label3.Text = "AP测试结果监控程序 V1.6";
+            this.label3.Text = "AP测试结果监控程序 V1.7";
             // 
             // label4
             // 
@@ -159,7 +161,7 @@
             this.Label_Count_OK.AutoSize = true;
             this.Label_Count_OK.Font = new System.Drawing.Font("宋体", 16F);
             this.Label_Count_OK.ForeColor = System.Drawing.Color.LimeGreen;
-            this.Label_Count_OK.Location = new System.Drawing.Point(105, 193);
+            this.Label_Count_OK.Location = new System.Drawing.Point(86, 195);
             this.Label_Count_OK.Name = "Label_Count_OK";
             this.Label_Count_OK.Size = new System.Drawing.Size(21, 22);
             this.Label_Count_OK.TabIndex = 9;
@@ -170,7 +172,7 @@
             this.Label_Count_NG.AutoSize = true;
             this.Label_Count_NG.Font = new System.Drawing.Font("宋体", 16F);
             this.Label_Count_NG.ForeColor = System.Drawing.Color.OrangeRed;
-            this.Label_Count_NG.Location = new System.Drawing.Point(105, 226);
+            this.Label_Count_NG.Location = new System.Drawing.Point(86, 228);
             this.Label_Count_NG.Name = "Label_Count_NG";
             this.Label_Count_NG.Size = new System.Drawing.Size(21, 22);
             this.Label_Count_NG.TabIndex = 11;
@@ -322,7 +324,7 @@
             this.label_start_time.AutoSize = true;
             this.label_start_time.Font = new System.Drawing.Font("宋体", 10F);
             this.label_start_time.ForeColor = System.Drawing.Color.Teal;
-            this.label_start_time.Location = new System.Drawing.Point(106, 266);
+            this.label_start_time.Location = new System.Drawing.Point(106, 259);
             this.label_start_time.Name = "label_start_time";
             this.label_start_time.Size = new System.Drawing.Size(14, 14);
             this.label_start_time.TabIndex = 30;
@@ -333,17 +335,41 @@
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("宋体", 10F);
             this.label10.ForeColor = System.Drawing.Color.Teal;
-            this.label10.Location = new System.Drawing.Point(6, 266);
+            this.label10.Location = new System.Drawing.Point(6, 259);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(84, 14);
+            this.label10.Size = new System.Drawing.Size(98, 14);
             this.label10.TabIndex = 29;
-            this.label10.Text = "Start Time:";
+            this.label10.Text = "软件启动时间:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("宋体", 10F);
+            this.label9.ForeColor = System.Drawing.Color.Magenta;
+            this.label9.Location = new System.Drawing.Point(6, 280);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(105, 14);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "最后处理时间：";
+            // 
+            // label_last_time
+            // 
+            this.label_last_time.AutoSize = true;
+            this.label_last_time.Font = new System.Drawing.Font("宋体", 10F);
+            this.label_last_time.ForeColor = System.Drawing.Color.Fuchsia;
+            this.label_last_time.Location = new System.Drawing.Point(106, 280);
+            this.label_last_time.Name = "label_last_time";
+            this.label_last_time.Size = new System.Drawing.Size(14, 14);
+            this.label_last_time.TabIndex = 32;
+            this.label_last_time.Text = "0";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 347);
+            this.Controls.Add(this.label_last_time);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.label_start_time);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label6);
@@ -374,7 +400,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "AP Test Result  Watcher";
+            this.Text = "AP Test Result  Watcher    Bulid:2020.06.19";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
@@ -415,6 +441,8 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Label label_start_time;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label_last_time;
     }
 }
 
