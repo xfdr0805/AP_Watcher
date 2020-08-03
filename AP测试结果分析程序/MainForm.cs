@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
@@ -41,7 +42,9 @@ namespace AP_Watcher {
         public MainForm()
         {
             InitializeComponent();
-
+            String version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            String BuildDateTime = System.IO.File.GetLastWriteTime(this.GetType().Assembly.Location).ToString();
+            this.Text = "AP Test Result  Watcher " + "V" + version + "  Build：" + BuildDateTime;
             timer1.Interval = 1000;
             label_start_time.Text = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString();
             timer1.Tick += new EventHandler(timer1_Tick);
@@ -215,10 +218,27 @@ namespace AP_Watcher {
                     barcode = barcode.ToUpper();
                     if (!CheckBox_Local.Checked) {
                         if (barcode.Length != 18) {
-                            File.Delete(Path.Combine(path_watch, fileName));
+                            try
+                            {
+                                File.Delete(Path.Combine(path_watch, fileName));
+
+                            }
+                            catch (Exception)
+                            {
+;
+                            }
                             continue;
                         } else if (!barcode.StartsWith("A")) {
-                            File.Delete(Path.Combine(path_watch, fileName));
+                            try
+                            {
+                                File.Delete(Path.Combine(path_watch, fileName));
+
+
+                            }
+                            catch (Exception)
+                            {
+                                ;
+                            }
                             continue;
                         }
                         SetLabelText(textBox_BarCode, barcode);
@@ -259,12 +279,13 @@ namespace AP_Watcher {
                         result = "";
                         //MessageBox.Show("检测到异常", "提示");
                         Console.WriteLine(ee.Message);
-                        timer2.Enabled = true;
                     } finally {
+
                         doc.Close();
                         doc.Dispose();
                                              
                     }
+                    timer2.Enabled = true;
                     //2020.06.19  修复在文件不能正常打开时，PASSED文件会被移动到FAILED文件夹中
                     if (result == "")
                         return;
@@ -275,7 +296,6 @@ namespace AP_Watcher {
                         Directory.CreateDirectory(path_ng_save);
                     }
                     // Model.ShowMsg show = new Model.ShowMsg();
-
                     //myDialog.Owner = this;
                     if (result == "PASSED") {
 
@@ -287,12 +307,14 @@ namespace AP_Watcher {
                         //}
                         //WaitForFile(e.FullPath);
                         // 确认目标文件不存在
-                        string _path_ok = Path.Combine(path_ok_save, fileName);
-                        if (File.Exists(_path_ok)) {
-                            File.Delete(_path_ok);
-                        }
+                        
                         // 移动
                         try {
+                            string _path_ok = Path.Combine(path_ok_save, fileName);
+                            if (File.Exists(_path_ok))
+                            {
+                                File.Delete(_path_ok);
+                            }
                             FileInfo fi = new FileInfo(Path.Combine(path_watch, fileName));
 
                             Console.WriteLine(fi.CreationTime.ToString());
@@ -321,11 +343,13 @@ namespace AP_Watcher {
                     } else if (result == "FAILED"){
 
                         //WaitForFile(e.FullPath);
-                        string _path_ng = Path.Combine(path_ng_save, fileName);
-                        if (File.Exists(_path_ng)) {
-                            File.Delete(_path_ng);
-                        }
+                        
                         try {
+                            string _path_ng = Path.Combine(path_ng_save, fileName);
+                            if (File.Exists(_path_ng))
+                            {
+                                File.Delete(_path_ng);
+                            }
                             File.Copy(Path.Combine(path_watch, fileName), Path.Combine(path_ng_save, fileName.ToUpper()), true);
                             File.Delete(Path.Combine(path_watch, fileName));
                             //File.Move(Path.Combine(path_watch, fileName), Path.Combine(path_ng_save, fileName));
