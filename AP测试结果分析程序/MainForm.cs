@@ -204,7 +204,7 @@ namespace AP_Watcher {
             timer2.Enabled = false;
             string path_ok_save = "";
             string path_ng_save = "";
-
+            string path_deleted = @"\\10.28.3.18\01 测试结果\AP-Deleted";
             if (System.IO.Directory.Exists(TextBox_Path_Watch.Text)) {
                 string[] files = System.IO.Directory.GetFiles(TextBox_Path_Watch.Text);
                 for(int i=0; i<files.Length; i++) {
@@ -220,8 +220,8 @@ namespace AP_Watcher {
                         if (barcode.Length != 18) {
                             try
                             {
-                                File.Delete(Path.Combine(path_watch, fileName));
-
+                                //File.Delete(Path.Combine(path_watch, fileName));
+                                File.Move(Path.Combine(path_watch, fileName), Path.Combine(path_deleted, barcode) + "---长度不够.pdf");
                             }
                             catch (Exception)
                             {
@@ -231,8 +231,8 @@ namespace AP_Watcher {
                         } else if (!barcode.StartsWith("A")) {
                             try
                             {
-                                File.Delete(Path.Combine(path_watch, fileName));
-
+                                //File.Delete(Path.Combine(path_watch, fileName));
+                                File.Move(Path.Combine(path_watch, fileName), Path.Combine(path_deleted, barcode) + "---不是A开头.pdf");
 
                             }
                             catch (Exception)
@@ -277,10 +277,18 @@ namespace AP_Watcher {
                         Console.WriteLine("识别结果：" + result);
                     } catch (Exception ee) {
                         result = "";
-                        //MessageBox.Show("检测到异常", "提示");
+                        try
+                        {
+                            File.Move(Path.Combine(path_watch, fileName), Path.Combine(path_deleted, barcode) + "---文件加密.pdf");
+
+                        }
+                        catch (Exception x)
+                        {
+                            Console.WriteLine(x.Message); ;
+                        }
                         Console.WriteLine(ee.Message);
                     } finally {
-
+                        
                         doc.Close();
                         doc.Dispose();
                                              

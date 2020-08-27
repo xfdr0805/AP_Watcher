@@ -131,7 +131,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(263, 22);
             this.label3.TabIndex = 6;
-            this.label3.Text = "AP测试结果监控程序 V1.7";
+            this.label3.Text = "AP测试结果监控程序 V1.8";
             // 
             // label4
             // 
